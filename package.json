@@ -4,7 +4,7 @@
   "description": "端到端加密节点",
   "main": "worker/index.js",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && node copy-auth-pages.js",
     "dev": " wrangler dev",
     "deploy": " wrangler deploy",
     "publish": " wrangler publish",
