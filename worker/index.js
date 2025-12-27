@@ -13,17 +13,19 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
-    // 处理WebSocket请求
-    const upgradeHeader = request.headers.get('Upgrade');
-    if (upgradeHeader && upgradeHeader === 'websocket') {
-      const id = env.CHAT_ROOM.idFromName('chat-room');
-      const stub = env.CHAT_ROOM.get(id);
+    // 处理API请求和WebSocket请求
+    const id = env.CHAT_ROOM.idFromName('chat-room');
+    const stub = env.CHAT_ROOM.get(id);
+    
+    // 处理API请求
+    if (url.pathname.startsWith('/api/')) {
       return stub.fetch(request);
     }
 
-    // 处理API请求
-    if (url.pathname.startsWith('/api/')) {
-      return handleApiRequest(request, env);
+    // 处理WebSocket请求
+    const upgradeHeader = request.headers.get('Upgrade');
+    if (upgradeHeader && upgradeHeader === 'websocket') {
+      return stub.fetch(request);
     }
 
     // 其余全部交给 ASSETS 处理（自动支持 hash 文件名和 SPA fallback）
@@ -340,7 +342,236 @@ export class ChatRoom {  constructor(state, env) {
     }
   }
 
+  // 处理注册请求
+  async handleRegister(request, headers) {
+    try {
+      const body = await request.json();
+      const { username, password } = body;
+
+      if (!username || !password) {
+        return new Response(JSON.stringify({ success: false, message: 'Username and password are required' }), {
+          status: 400,
+          headers
+        });
+      }
+
+      const result = await register(this.state, username, password);
+
+      if (result.success) {
+        return new Response(JSON.stringify(result), { status: 201, headers });
+      } else {
+        return new Response(JSON.stringify(result), { status: 400, headers });
+      }
+    } catch (error) {
+      console.error('Register error:', error);
+      return new Response(JSON.stringify({ success: false, message: 'Internal server error' }), {
+        status: 500,
+        headers
+      });
+    }
+  }
+
+  // 处理登录请求
+  async handleLogin(request, headers) {
+    try {
+      const body = await request.json();
+      const { username, password } = body;
+
+      if (!username || !password) {
+        return new Response(JSON.stringify({ success: false, message: 'Username and password are required' }), {
+          status: 400,
+          headers
+        });
+      }
+
+      const result = await login(this.state, username, password);
+
+      if (result.success) {
+        return new Response(JSON.stringify(result), { status: 200, headers });
+      } else {
+        return new Response(JSON.stringify(result), { status: 401, headers });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      return new Response(JSON.stringify({ success: false, message: 'Internal server error' }), {
+        status: 500,
+        headers
+      });
+    }
+  }
+
+  // 验证管理员权限
+  async verifyAdmin(request, headers) {
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return new Response(JSON.stringify({ success: false, message: 'Unauthorized' }), {
+        status: 401,
+        headers
+      });
+    }
+
+    const token = authHeader.substring(7);
+    const verification = await verifySessionToken(token);
+    if (!verification.valid) {
+      return new Response(JSON.stringify({ success: false, message: verification.message }), {
+        status: 401,
+        headers
+      });
+    }
+
+    // 检查用户是否是管理员
+    const users = await getAllUsers(this.state);
+    const user = users.find(u => u.id === verification.userId);
+    if (!user || user.role !== UserRoles.ADMIN) {
+      return new Response(JSON.stringify({ success: false, message: 'Forbidden: Admin access required' }), {
+        status: 403,
+        headers
+      });
+    }
+
+    return null; // 验证通过
+  }
+
+  // 处理获取所有用户请求
+  async handleGetUsers(request, headers) {
+    const errorResponse = await this.verifyAdmin(request, headers);
+    if (errorResponse) return errorResponse;
+
+    try {
+      const users = await getAllUsers(this.state);
+      return new Response(JSON.stringify({ success: true, users }), { status: 200, headers });
+    } catch (error) {
+      console.error('Get users error:', error);
+      return new Response(JSON.stringify({ success: false, message: 'Internal server error' }), {
+        status: 500,
+        headers
+      });
+    }
+  }
+
+  // 处理更新用户角色请求
+  async handleUpdateUserRole(request, headers) {
+    const errorResponse = await this.verifyAdmin(request, headers);
+    if (errorResponse) return errorResponse;
+
+    try {
+      const body = await request.json();
+      const { targetUserId, newRole } = body;
+
+      if (!targetUserId || !newRole) {
+        return new Response(JSON.stringify({ success: false, message: 'User ID and role are required' }), {
+          status: 400,
+          headers
+        });
+      }
+
+      const result = await updateUserRole(this.state, targetUserId, newRole);
+
+      if (result.success) {
+        return new Response(JSON.stringify(result), { status: 200, headers });
+      } else {
+        return new Response(JSON.stringify(result), { status: 400, headers });
+      }
+    } catch (error) {
+      console.error('Update user role error:', error);
+      return new Response(JSON.stringify({ success: false, message: 'Internal server error' }), {
+        status: 500,
+        headers
+      });
+    }
+  }
+
+  // 处理删除用户请求
+  async handleDeleteUser(request, headers) {
+    const errorResponse = await this.verifyAdmin(request, headers);
+    if (errorResponse) return errorResponse;
+
+    try {
+      const url = new URL(request.url);
+      const targetUserId = url.searchParams.get('userId');
+
+      if (!targetUserId) {
+        return new Response(JSON.stringify({ success: false, message: 'User ID is required' }), {
+          status: 400,
+          headers
+        });
+      }
+
+      // 获取请求者ID
+      const authHeader = request.headers.get('Authorization');
+      const token = authHeader.substring(7);
+      const verification = await verifySessionToken(token);
+
+      const result = await deleteUser(this.state, targetUserId, verification.userId);
+
+      if (result.success) {
+        return new Response(JSON.stringify(result), { status: 200, headers });
+      } else {
+        return new Response(JSON.stringify(result), { status: 400, headers });
+      }
+    } catch (error) {
+      console.error('Delete user error:', error);
+      return new Response(JSON.stringify({ success: false, message: 'Internal server error' }), {
+        status: 500,
+        headers
+      });
+    }
+  }
+
+  // 处理API请求
+  async handleApiRequest(request) {
+    const url = new URL(request.url);
+    const method = request.method;
+    const pathname = url.pathname;
+
+    // 设置CORS头
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Content-Type': 'application/json'
+    };
+
+    // 处理预检请求
+    if (method === 'OPTIONS') {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    try {
+      // 路由处理
+      if (method === 'POST' && pathname === '/api/register') {
+        return await this.handleRegister(request, corsHeaders);
+      } else if (method === 'POST' && pathname === '/api/login') {
+        return await this.handleLogin(request, corsHeaders);
+      } else if (method === 'GET' && pathname === '/api/users') {
+        return await this.handleGetUsers(request, corsHeaders);
+      } else if (method === 'PUT' && pathname === '/api/users/role') {
+        return await this.handleUpdateUserRole(request, corsHeaders);
+      } else if (method === 'DELETE' && pathname === '/api/users') {
+        return await this.handleDeleteUser(request, corsHeaders);
+      } else {
+        return new Response(JSON.stringify({ error: 'Not found' }), {
+          status: 404,
+          headers: corsHeaders
+        });
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+      return new Response(JSON.stringify({ error: 'Internal server error' }), {
+        status: 500,
+        headers: corsHeaders
+      });
+    }
+  }
+
   async fetch(request) {
+    const url = new URL(request.url);
+    
+    // 处理API请求
+    if (url.pathname.startsWith('/api/')) {
+      return this.handleApiRequest(request);
+    }
+    
     // Check for WebSocket upgrade
     const upgradeHeader = request.headers.get('Upgrade');
     if (!upgradeHeader || upgradeHeader !== 'websocket') {
