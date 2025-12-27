@@ -2,6 +2,10 @@
 // Import the NodeCrypt module (used for encryption)
 import './NodeCrypt.js';
 
+// 导入认证服务
+// Import authentication service
+import authService from './auth.js';
+
 // 从 util.file.js 中导入设置文件发送的函数
 // Import setupFileSend function from util.file.js
 import {
@@ -106,6 +110,15 @@ window.downloadFile = downloadFile;
 // 当 DOM 内容加载完成后执行初始化逻辑
 // Run initialization logic when the DOM content is fully loaded
 window.addEventListener('DOMContentLoaded', () => {
+	// 检查用户是否已登录
+	// Check if user is logged in
+	if (!authService.isLoggedIn()) {
+		// 未登录用户重定向到登录页面
+		// Redirect to login page if not logged in
+		window.location.href = '/auth.html';
+		return;
+	}
+
 	// 移除预加载样式类，允许过渡效果
 	// Remove preload class to allow transitions
 	setTimeout(() => {
@@ -151,6 +164,17 @@ window.addEventListener('DOMContentLoaded', () => {
 			e.stopPropagation();  // 阻止事件冒泡 / Stop event from bubbling
 			openSettingsPanel(); // 打开设置面板 / Open settings panel
 		}
+	}
+
+	// 退出登录按钮事件处理 / Logout button event handler
+	const logoutBtn = $id('logout-btn');
+	if (logoutBtn) {
+		logoutBtn.onclick = () => {
+			if (confirm('确定要退出登录吗？')) {
+				authService.logout();
+				window.location.href = '/auth.html';
+			}
+		};
 	}
 
 	// 设置返回按钮事件处理 / Settings back button event handler
