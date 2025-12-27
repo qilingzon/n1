@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NodeCrypt - 登录/注册</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/body.css">
+  <link rel="stylesheet" href="css/phone.css">
+  <link rel="stylesheet" href="css/form-animation.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <style>
+    /* 添加一个预加载样式，避免闪烁 */
+    .preload * {
+      -webkit-transition: none !important;
+      -moz-transition: none !important;
+      -ms-transition: none !important;
+      -o-transition: none !important;
+      transition: none !important;
+    }
+  </style>
+</head>
+<body class="preload">
+  <div class="auth-container">
+    <!-- 翻转卡片容器 -->
+    <div class="flip-card" id="flip-card">
+      <div class="flip-card-inner">
+        <!-- 卡片正面 - 登录表单 -->
+        <div class="flip-card-front">
+          <h1 id="login-title">登录</h1>
+          <form id="login-form">
+            <div class="input-group">
+              <input id="login-username" type="text" autocomplete="username" required minlength="3" maxlength="20" placeholder="">
+              <label for="login-username" class="floating-label">用户名</label>
+            </div>
+            <div class="input-group">
+              <input id="login-password" type="password" autocomplete="current-password" required minlength="6" maxlength="20" placeholder="">
+              <label for="login-password" class="floating-label">密码</label>
+            </div>
+            <button type="submit" class="auth-btn">登录</button>
+            <p class="auth-switch">还没有账号？<a href="#" id="switch-to-register">注册</a></p>
+          </form>
+        </div>
+
+        <!-- 卡片背面 - 注册表单 -->
+        <div class="flip-card-back">
+          <h1 id="register-title">注册</h1>
+          <form id="register-form">
+            <div class="input-group">
+              <input id="register-username" type="text" autocomplete="username" required minlength="3" maxlength="20" placeholder="">
+              <label for="register-username" class="floating-label">用户名</label>
+            </div>
+            <div class="input-group">
+              <input id="register-password" type="password" autocomplete="new-password" required minlength="6" maxlength="20" placeholder="">
+              <label for="register-password" class="floating-label">密码</label>
+            </div>
+            <div class="input-group">
+              <input id="register-confirm-password" type="password" autocomplete="new-password" required minlength="6" maxlength="20" placeholder="">
+              <label for="register-confirm-password" class="floating-label">确认密码</label>
+            </div>
+            <button type="submit" class="auth-btn">注册</button>
+            <p class="auth-switch">已有账号？<a href="#" id="switch-to-login">登录</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 消息提示 -->
+    <div class="message-container" id="message-container"></div>
+  </div>
+
+  <script type="module" src="./js/auth-ui.js"></script>
+</body>
+</html>

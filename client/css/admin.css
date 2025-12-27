@@ -1,0 +1,466 @@
+/* 管理员界面样式 */
+/* Admin panel styles */
+
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* 侧边栏样式 */
+.admin-sidebar {
+  width: 250px;
+  background-color: var(--sidebar-bg-color);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  height: 100%;
+  z-index: 100;
+}
+
+.admin-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-header h1 {
+  margin: 0 0 15px 0;
+  font-size: 20px;
+  color: var(--primary-color);
+}
+
+.admin-user-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: var(--card-bg-color);
+  border-radius: 6px;
+}
+
+.admin-badge {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-nav {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background-color 0.3s;
+  margin-bottom: 5px;
+}
+
+.admin-nav-item svg {
+  margin-right: 10px;
+}
+
+.admin-nav-item:hover {
+  background-color: var(--hover-bg-color);
+}
+
+.admin-nav-item.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.admin-footer {
+  padding: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.admin-link {
+  display: block;
+  color: var(--text-color);
+  text-decoration: none;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.admin-link:hover {
+  color: var(--primary-color);
+}
+
+.admin-logout-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.admin-logout-btn:hover {
+  background-color: var(--hover-bg-color);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* 主内容区样式 */
+.admin-main {
+  flex: 1;
+  margin-left: 250px;
+  padding: 30px;
+}
+
+.admin-section {
+  display: none;
+}
+
+.admin-section.active {
+  display: block;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.section-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 14px;
+}
+
+.admin-btn svg {
+  margin-right: 8px;
+}
+
+.admin-btn:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.admin-btn:disabled {
+  background-color: var(--disabled-color);
+  cursor: not-allowed;
+}
+
+.admin-btn.secondary {
+  background-color: var(--secondary-color);
+}
+
+.admin-btn.danger {
+  background-color: #f44336;
+}
+
+.admin-btn.danger:hover {
+  background-color: #d32f2f;
+}
+
+/* 用户表格样式 */
+.users-table-container {
+  background-color: var(--card-bg-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th,
+.users-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.users-table th {
+  background-color: var(--hover-bg-color);
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.users-table tr:hover {
+  background-color: var(--hover-bg-color);
+}
+
+.user-role-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.user-role-badge.admin {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.user-role-badge.user {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.user-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.user-action-btn {
+  padding: 6px 10px;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 12px;
+}
+
+.user-action-btn:hover {
+  background-color: var(--hover-bg-color);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.user-action-btn.delete:hover {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+/* 设置部分样式 */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.setting-item {
+  background-color: var(--card-bg-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.setting-item h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+}
+
+.setting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info-label {
+  font-weight: 600;
+  color: var(--secondary-text-color);
+}
+
+.info-value {
+  color: var(--text-color);
+}
+
+.setting-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* 模态框样式 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: var(--card-bg-color);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--secondary-text-color);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* 消息提示样式 */
+.message-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 300px;
+  z-index: 1001;
+}
+
+.message {
+  padding: 12px 20px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease-out;
+}
+
+.message.success {
+  background-color: #4caf50;
+  color: white;
+}
+
+.message.error {
+  background-color: #f44336;
+  color: white;
+}
+
+.message.info {
+  background-color: #2196f3;
+  color: white;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .admin-main {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .admin-nav {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 0;
+  }
+
+  .admin-nav-item {
+    flex-shrink: 0;
+    margin-bottom: 0;
+    margin-right: 5px;
+  }
+
+  .users-table-container {
+    overflow-x: auto;
+  }
+
+  .modal-content {
+    margin: 15px;
+  }
+
+  .message-container {
+    left: 20px;
+    right: 20px;
+    max-width: none;
+  }
+}
