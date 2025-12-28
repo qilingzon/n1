@@ -22,113 +22,44 @@
   </style>
 </head>
 <body class="preload">
-  <div class="auth-background">
-    <div class="auth-container">
-      <!-- Logo区域 -->
-      <div class="logo-section">
-        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <h1 class="app-name">NodeCrypt</h1>
-        <p class="app-tagline">安全加密聊天平台</p>
+  <div class="auth-container">
+    <div class="auth-card">
+      <!-- 登录表单 -->
+      <div class="auth-form" id="login-form-container">
+        <h1>登录</h1>
+        <form id="login-form">
+          <div class="input-group">
+            <input id="login-username" type="text" autocomplete="username" required minlength="3" maxlength="20" placeholder="用户名">
+          </div>
+          <div class="input-group">
+            <input id="login-password" type="password" autocomplete="current-password" required minlength="6" maxlength="20" placeholder="密码">
+          </div>
+          <button type="submit" class="auth-btn">登录</button>
+          <p class="auth-switch">还没有账号？<a href="#" id="switch-to-register">立即注册</a></p>
+        </form>
       </div>
 
-      <!-- 翻转卡片容器 -->
-      <div class="flip-card" id="flip-card">
-        <div class="flip-card-inner">
-          <!-- 卡片正面 - 登录表单 -->
-          <div class="flip-card-front">
-            <div class="form-header">
-              <h2 id="login-title">欢迎回来</h2>
-              <p class="form-subtitle">登录您的账户以继续</p>
-            </div>
-            <form id="login-form">
-              <div class="input-group">
-                <div class="input-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                  </svg>
-                </div>
-                <input id="login-username" type="text" autocomplete="username" required minlength="3" maxlength="20" placeholder="">
-                <label for="login-username" class="floating-label">用户名</label>
-              </div>
-              <div class="input-group">
-                <div class="input-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                  </svg>
-                </div>
-                <input id="login-password" type="password" autocomplete="current-password" required minlength="6" maxlength="20" placeholder="">
-                <label for="login-password" class="floating-label">密码</label>
-              </div>
-              <button type="submit" class="auth-btn">
-                <span>登录</span>
-                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/>
-                  <polyline points="12 5 19 12 12 19"/>
-                </svg>
-              </button>
-              <p class="auth-switch">还没有账号？<a href="#" id="switch-to-register">立即注册</a></p>
-            </form>
+      <!-- 注册表单 -->
+      <div class="auth-form hidden" id="register-form-container">
+        <h1>注册</h1>
+        <form id="register-form">
+          <div class="input-group">
+            <input id="register-username" type="text" autocomplete="username" required minlength="3" maxlength="20" placeholder="用户名">
           </div>
-
-          <!-- 卡片背面 - 注册表单 -->
-          <div class="flip-card-back">
-            <div class="form-header">
-              <h2 id="register-title">创建账户</h2>
-              <p class="form-subtitle">注册以开始使用NodeCrypt</p>
-            </div>
-            <form id="register-form">
-              <div class="input-group">
-                <div class="input-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                  </svg>
-                </div>
-                <input id="register-username" type="text" autocomplete="username" required minlength="3" maxlength="20" placeholder="">
-                <label for="register-username" class="floating-label">用户名</label>
-              </div>
-              <div class="input-group">
-                <div class="input-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                  </svg>
-                </div>
-                <input id="register-password" type="password" autocomplete="new-password" required minlength="6" maxlength="20" placeholder="">
-                <label for="register-password" class="floating-label">密码</label>
-              </div>
-              <div class="input-group">
-                <div class="input-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                  </svg>
-                </div>
-                <input id="register-confirm-password" type="password" autocomplete="new-password" required minlength="6" maxlength="20" placeholder="">
-                <label for="register-confirm-password" class="floating-label">确认密码</label>
-              </div>
-              <button type="submit" class="auth-btn">
-                <span>注册</span>
-                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/>
-                  <polyline points="12 5 19 12 12 19"/>
-                </svg>
-              </button>
-              <p class="auth-switch">已有账号？<a href="#" id="switch-to-login">立即登录</a></p>
-            </form>
+          <div class="input-group">
+            <input id="register-password" type="password" autocomplete="new-password" required minlength="6" maxlength="20" placeholder="密码">
           </div>
-        </div>
+          <div class="input-group">
+            <input id="register-confirm-password" type="password" autocomplete="new-password" required minlength="6" maxlength="20" placeholder="确认密码">
+          </div>
+          <button type="submit" class="auth-btn">注册</button>
+          <p class="auth-switch">已有账号？<a href="#" id="switch-to-login">立即登录</a></p>
+        </form>
       </div>
-
-      <!-- 消息提示 -->
-      <div class="message-container" id="message-container"></div>
     </div>
+
+    <!-- 消息提示 -->
+    <div class="message-container" id="message-container"></div>
   </div>
 
   <script type="module" src="./js/auth-ui.js"></script>

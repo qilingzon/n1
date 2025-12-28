@@ -1,174 +1,59 @@
 /* 认证页面样式 */
 /* Authentication page styles */
 
-.auth-background {
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--bg-color) 0%, var(--card-bg-color) 100%);
+.auth-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: var(--bg-color);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--card-bg-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
-.auth-background::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 20% 50%, rgba(79, 172, 254, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 80% 50%, rgba(0, 242, 254, 0.1) 0%, transparent 50%);
-  pointer-events: none;
-}
-
-.auth-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 1200px;
-  padding: 40px 20px;
-  position: relative;
-  z-index: 1;
-}
-
-/* Logo区域 */
-.logo-section {
-  text-align: center;
-  margin-bottom: 40px;
-  animation: fadeInDown 0.6s ease-out;
-}
-
-.logo-icon {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 16px;
-  color: var(--primary-color);
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-}
-
-.app-name {
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0 0 8px 0;
-  color: var(--text-color);
-  letter-spacing: -0.5px;
-}
-
-.app-tagline {
-  font-size: 16px;
-  color: var(--secondary-text-color);
-  margin: 0;
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.flip-card {
-  background-color: transparent;
-  width: 100%;
-  max-width: 450px;
-  height: auto;
-  perspective: 1000px;
-  animation: fadeInUp 0.6s ease-out 0.2s both;
-}
-
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  text-align: center;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-}
-
-.flip-card.flipped .flip-card-inner {
-  transform: rotateY(180deg);
-}
-
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  width: 100%;
-  backface-visibility: hidden;
+.auth-form {
   padding: 40px;
-  border-radius: 16px;
-  background-color: var(--card-bg-color);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.flip-card-back {
-  transform: rotateY(180deg);
+.auth-form.hidden {
+  display: none;
 }
 
-.form-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.form-header h2 {
-  margin: 0 0 8px 0;
+.auth-form h1 {
+  margin: 0 0 30px 0;
   color: var(--text-color);
   font-size: 24px;
-  font-weight: 700;
-}
-
-.form-subtitle {
-  margin: 0;
-  color: var(--secondary-text-color);
-  font-size: 14px;
+  text-align: center;
 }
 
 .input-group {
-  position: relative;
-  margin-bottom: 25px;
-  text-align: left;
+  margin-bottom: 20px;
 }
 
 .input-group input {
   width: 100%;
-  padding: 12px 15px;
+  padding: 12px 16px;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 8px;
+  font-size: 14px;
   background-color: var(--input-bg-color);
   color: var(--text-color);
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .input-group input:focus {
   outline: none;
   border-color: var(--primary-color);
-}
-
-.input-group .floating-label {
-  position: absolute;
-  top: 12px;
-  left: 15px;
-  pointer-events: none;
-  color: var(--secondary-text-color);
-  transition: 0.2s ease all;
-}
-
-.input-group input:focus ~ .floating-label,
-.input-group input:not(:placeholder-shown) ~ .floating-label {
-  top: -10px;
-  left: 10px;
-  font-size: 12px;
-  background-color: var(--card-bg-color);
-  padding: 0 5px;
-  color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
 }
 
 .auth-btn {
@@ -177,11 +62,11 @@
   background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.1s;
   margin-top: 10px;
 }
 
@@ -189,15 +74,21 @@
   background-color: var(--primary-hover-color);
 }
 
+.auth-btn:active {
+  transform: scale(0.98);
+}
+
 .auth-btn:disabled {
   background-color: var(--disabled-color);
   cursor: not-allowed;
+  transform: none;
 }
 
 .auth-switch {
   margin-top: 20px;
   font-size: 14px;
   color: var(--secondary-text-color);
+  text-align: center;
 }
 
 .auth-switch a {

@@ -385,6 +385,7 @@ export class ChatRoom {  constructor(state, env) {
       }
 
       const result = await login(this.state, username, password);
+      console.log('Login result:', result);
 
       if (result.success) {
         return new Response(JSON.stringify(result), { status: 200, headers });

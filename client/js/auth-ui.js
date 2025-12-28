@@ -4,7 +4,8 @@
 import authService from './auth.js';
 
 // DOM元素
-const flipCard = document.getElementById('flip-card');
+const loginFormContainer = document.getElementById('login-form-container');
+const registerFormContainer = document.getElementById('register-form-container');
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
 const switchToRegister = document.getElementById('switch-to-register');
@@ -30,13 +31,15 @@ function showMessage(message, type = 'info') {
 // 切换到注册表单
 switchToRegister.addEventListener('click', (e) => {
   e.preventDefault();
-  flipCard.classList.add('flipped');
+  loginFormContainer.classList.add('hidden');
+  registerFormContainer.classList.remove('hidden');
 });
 
 // 切换到登录表单
 switchToLogin.addEventListener('click', (e) => {
   e.preventDefault();
-  flipCard.classList.remove('flipped');
+  registerFormContainer.classList.add('hidden');
+  loginFormContainer.classList.remove('hidden');
 });
 
 // 处理登录表单提交
@@ -129,7 +132,8 @@ registerForm.addEventListener('submit', async (e) => {
 
       // 切换到登录表单
       setTimeout(() => {
-        flipCard.classList.remove('flipped');
+        registerFormContainer.classList.add('hidden');
+        loginFormContainer.classList.remove('hidden');
       }, 1000);
     } else {
       showMessage(result.message || '注册失败', 'error');
