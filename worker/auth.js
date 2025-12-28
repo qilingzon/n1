@@ -150,9 +150,27 @@ async function getUsers(state) {
       };
       const users = { [defaultAdmin.id]: defaultAdmin };
       await state.storage.put('users', JSON.stringify(users));
+      console.log('Default admin account created:', { username: defaultAdmin.username, id: defaultAdmin.id });
       return users;
     }
-    return JSON.parse(usersData);
+    const users = JSON.parse(usersData);
+    
+    // 检查是否存在管理员账户，如果不存在则创建
+    const hasAdmin = Object.values(users).some(u => u.role === UserRoles.ADMIN);
+    if (!hasAdmin) {
+      const defaultAdmin = {
+        id: generateUserId(),
+        username: 'admin',
+        password: await hashPassword('admin123'),
+        role: UserRoles.ADMIN,
+        createdAt: new Date().toISOString()
+      };
+      users[defaultAdmin.id] = defaultAdmin;
+      await state.storage.put('users', JSON.stringify(users));
+      console.log('Default admin account created:', { username: defaultAdmin.username, id: defaultAdmin.id });
+    }
+    
+    return users;
   } catch (error) {
     console.error('Error getting users:', error);
     return {};
